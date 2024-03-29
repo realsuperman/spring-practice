@@ -1,10 +1,12 @@
-package com.example.ecommerce.service;
+package com.example.ecommerce.stream;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LambdaTest {
     public static void main(String[] args) {
@@ -28,6 +30,10 @@ public class LambdaTest {
 
         Predicate<Boolean> predicate = Objects::isNull;
         Predicate<Boolean> predicate2 = a->Objects.isNull(a);
+
+        String[] arr = {"Test"};
+        Stream<String> stringStream = Stream.of(arr).filter(s -> s.charAt(0) == 's');
+
 
     }
 }
