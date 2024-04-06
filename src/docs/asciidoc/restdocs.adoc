@@ -14,3 +14,13 @@ include::{snippets}/memberPayment/http-request.adoc[]
 === Response
 
 include::{snippets}/memberPayment/http-response.adoc[]
+
+== 맴버 정보 저장하기
+
+=== Request
+
+include::{snippets}/createMember/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/createMember/http-response.adoc[]

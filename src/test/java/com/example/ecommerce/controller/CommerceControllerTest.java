@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
@@ -40,9 +42,22 @@ class CommerceControllerTest {
         fakePayments.add(Payment.builder().paymentId(2L).payDate(LocalDateTime.now()).member(Member.builder().memberId(2L).name("csh2").build()).build());
         when(paymentService.getPaymentList()).thenReturn(fakePayments);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/" ))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api" ))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("memberPayment",
+                        Preprocessors.preprocessRequest(prettyPrint()),
+                        Preprocessors.preprocessResponse(prettyPrint())))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void createMember() throws Exception {
+        String requestJson = "{\"name\": \"csh\"}";
+        when(memberService.createMember(any())).thenReturn(Member.builder().memberId(1L).name("최성훈").build());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api" ).contentType(MediaType.APPLICATION_JSON).content(requestJson))
+                .andDo(MockMvcResultHandlers.print())
+                .andDo(MockMvcRestDocumentation.document("createMember",
                         Preprocessors.preprocessRequest(prettyPrint()),
                         Preprocessors.preprocessResponse(prettyPrint())))
                 .andExpect(MockMvcResultMatchers.status().isOk());
